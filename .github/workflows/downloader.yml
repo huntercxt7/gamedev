@@ -1,1 +1,40 @@
+name: Direct Downloader
 
+on:
+  workflow_dispatch:
+    inputs:
+      file_url:
+        description: "Direct file URL"
+        required: true
+        type: string
+
+jobs:
+  download:
+    runs-on: windows-latest
+
+    steps:
+      - name: Install aria2
+        run: choco install aria2 -y
+
+      - name: Create downloads folder
+        run: mkdir downloads
+
+      - name: Download file
+        shell: powershell
+        run: |
+          $url = "${{ github.event.inputs.file_url }}"
+          $filename = Split-Path $url -Leaf
+
+          aria2c `
+            -x 16 `
+            -s 16 `
+            -k 1M `
+            -d downloads `
+            -o $filename `
+            $url
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: downloaded-file
+          path: downloads/*
