@@ -1,1 +1,29 @@
 
+name: Download VS BuildTools
+
+on:
+  workflow_dispatch:
+
+jobs:
+  download:
+    runs-on: windows-latest
+
+    steps:
+      - name: Install aria2
+        run: choco install aria2 -y
+
+      - name: Download vs_BuildTools.exe
+        run: |
+          aria2c ^
+          -x 16 ^
+          -s 16 ^
+          -k 1M ^
+          --max-redirect=5 ^
+          -o vs_BuildTools.exe ^
+          https://aka.ms/vs/17/pre/vs_BuildTools.exe
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vs_BuildTools
+          path: vs_BuildTools.exe
