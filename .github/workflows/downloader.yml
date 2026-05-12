@@ -1,5 +1,8 @@
 name: Downloader
 
+permissions:
+  contents: write
+
 on:
   workflow_dispatch:
     inputs:
@@ -44,4 +47,5 @@ jobs:
 
           git add downloads/*
           git commit -m "Add downloaded file"
+
           git push
