@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       file_url:
-        description: "File URL"
+        description: "Direct file URL"
         required: true
         type: string
 
@@ -23,7 +23,11 @@ jobs:
         run: choco install aria2 -y
 
       - name: Create downloads folder
-        run: mkdir downloads
+        shell: powershell
+        run: |
+          if (!(Test-Path "downloads")) {
+            New-Item -ItemType Directory -Path "downloads"
+          }
 
       - name: Download file
         shell: powershell
@@ -39,7 +43,7 @@ jobs:
             -o $filename `
             $url
 
-      - name: Commit downloaded file
+      - name: Commit and push downloaded file
         shell: powershell
         run: |
           git config --global user.name "github-actions"
