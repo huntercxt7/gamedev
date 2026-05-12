@@ -12,7 +12,8 @@ jobs:
         run: choco install aria2 -y
 
       - name: Download Build Tools Bootstrapper
-        run: aria2c -x 16 -s 16 -k 1M --max-redirect=5 -d . -o vs_BuildTools.exe "https://aka.ms/vs/17/release/vs_BuildTools.exe"
+        run: aria2c -x 16 -s 16 -k 1M -d . -o vs_BuildTools.exe "https://aka.ms/vs/17/release/vs_BuildTools.exe"
+
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
