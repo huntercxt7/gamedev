@@ -1,4 +1,4 @@
-name: Download VS Build Tools
+name: Download VS BuildTools
 
 on:
   workflow_dispatch:
@@ -11,12 +11,13 @@ jobs:
       - name: Install aria2
         run: choco install aria2 -y
 
-      - name: Download Build Tools Bootstrapper
-        run: aria2c -x 16 -s 16 -k 1M -d . -o vs_BuildTools.exe "https://aka.ms/vs/17/release/vs_BuildTools.exe"
-
+      - name: Download VS BuildTools
+        run: |
+          mkdir downloads
+          aria2c -x 16 -s 16 -k 1M -d downloads -o vs_BuildTools.exe "https://aka.ms/vs/17/release/vs_BuildTools.exe"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: vs_BuildTools
-          path: vs_BuildTools.exe
+          path: downloads/vs_BuildTools.exe
